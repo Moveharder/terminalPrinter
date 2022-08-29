@@ -1,5 +1,9 @@
-# terminalPrinter
+### easy-terminal-printer
 Simulate command line, typewriter output, dialogue output, easy to configure and easy to use!
+
+#### Install
+
+> npm i easy-terminal-printer --save
 
 ### Usages
 
@@ -11,26 +15,90 @@ Simulate command line, typewriter output, dialogue output, easy to configure and
 
 ```
 <script type="module">
-    import TerminalPrinter from '../index.js';
+    import TerminalPrinter from './index.js';
 
-    let tp = new TerminalPrinter('#root_container');
+    let tp = new TerminalPrinter({
+        rootSelector:'#root_container',
+        prefix:'[ iTerm2 ]',
+        duration: 60
+    });
 
     let words = [
         {
             word:'hello world.',
-            duration: 100
+        },
+        {
+            prefix:'[ Cool Prefix ]',
+            word:'这句话前面有签名',
         },
         {
             word:'hi 😄 😈 👨 👩 🧒 👴 👵',
-            duration: 100,
             lineStyleObject:{
                 fontSize: '20px',
                 color:'orange'
             }
-        },//通过「lineStyleObject」自定义行样式
+        },
+        {
+            word:'指定tagName为H3，全英文内容在微信中可能出现翻译字样',
+            tagName: 'h3'
+        },
+        {
+            prefix:'Rose: ',
+            word:'Goodbye Jack...',
+        },
+        {
+            prefix:'Jack: ',
+            word:'You jump, i jump.',
+        },
+        {
+            prefix:'Rose: ',
+            word:'cool ~',
+        },
+        {
+            prefix:'',
+            word:'Amazing! 男女主殉情，全剧终！',
+        },
+        { 
+            prefix:'[Loading]',
+            word:'3',
+            duration: 1000,
+            lineSelector:'.loading',
+            hasOnTypingStyle: false
+        },
+        { 
+            prefix:'[Loading]',
+            word:'2',
+            duration: 1000,
+            lineSelector:'.loading',
+            hasOnTypingStyle: false
+        },
+        { 
+            prefix:'[Loading]',
+            word:'1',
+            duration: 1000,
+            lineSelector:'.loading',
+            hasOnTypingStyle: false
+        },
+        { 
+            prefix:'[Loading]',
+            word:'💥💥',
+            lineSelector:'.loading',
+            hasOnTypingStyle: false
+        },
+        { 
+            prefix:'[Title]',
+            word:'1.我是指定rootSelecto[父元素]的一句话',
+            rootSelector:'.title',
+            hasOnTypingStyle: false
+        },
+        { 
+            prefix:'[Title]',
+            word:'2.我是指定rootSelecto[父元素]的一句话',
+            rootSelector:'.title',
+            hasOnTypingStyle: false
+        },
         {
             word:'hello my terminal printer lines.',
-            duration: 80,
             onLineStart: ()=>{
                 console.log('on line Start')
             },
@@ -40,60 +108,27 @@ Simulate command line, typewriter output, dialogue output, easy to configure and
             onLineFinished: ()=>{
                 console.log('on line Finished')
             }
-        },//事件监听
-        {
-            prefix:'Rose: ',
-            word:'I jump.',
-            duration: 100
-        },//修改prefix，模拟对话模式
-        {
-            prefix:'Jack: ',
-            word:'you jump, i jump.',
-            duration: 100
-        },//修改prefix，模拟对话模式
-        {
-            prefix:'Rose: ',
-            word:'cool ~',
-            duration: 100
-        },//修改prefix，模拟对话模式
-        {
-            prefix:'',
-            word:'Amazing! 男女主殉情，全剧终！',
-            duration: 100
         },
-        {
-            prefix:'[Loading]',
-            word:'3',
-            duration: 1000,
-            lineSelector:'.loading',
-            hasOnTypingStyle: false
-        },//指定相同的「lineSelector」实现loading效果
-        {
-            prefix:'[Loading]',
-            word:'2',
-            duration: 1000,
-            lineSelector:'.loading',
-            hasOnTypingStyle: false
-        },//指定相同的「lineSelector」实现loading效果
-        {
-            prefix:'[Loading]',
-            word:'1',
-            duration: 1000,
-            lineSelector:'.loading',
-            hasOnTypingStyle: false
-        },//指定相同的「lineSelector」实现loading效果
-        {
-            prefix:'[Loading]',
-            word:'💥💥',
-            duration: 40,
-            lineSelector:'.loading',
-            hasOnTypingStyle: false
-        },//指定相同的「lineSelector」实现loading效果
     ];
 
-    tp.run(words);
+    tp.run(words).then(res=>{
+        console.log('well done! do sth else')
+    });
 </script>
 
+```
+
+#### 构造函数说明
+- `rootSelector` 所有行内容的父容器
+- `prefix` 所有行内容的前缀签名内容
+- `duration` 所有行内容，每个字符输出所需要的时间，越大越慢
+
+```
+let tp = new TerminalPrinter({
+    rootSelector:'#root_container',
+    prefix:'[ iTerm2 ]',
+    duration: 60
+});
 ```
 
 #### 参数说明
@@ -108,9 +143,10 @@ Simulate command line, typewriter output, dialogue output, easy to configure and
    * @param obj.lineSelector 当前行内容输出在哪个html容器里
    * @param obj.word 当前行要输出的内容
    * @param obj.hasOnTypingStyle 是否有打字效果，默认 true
-   * @param obj.prefix 当前行要输出内容的前缀，默认 [ Believer ]
-   * @param obj.duration 单个字符输出所需时间，默认 100，越大越慢
+   * @param obj.prefix 当前行要输出内容的前缀
+   * @param obj.duration 单个字符输出所需时间，默认 null，越大越慢
    * @param obj.lineStyleObject 行样式，默认 {}
+   * @param obj.tagName 行内容包裹标签，默认 code，可防止页面提示翻译
    * @param obj.onLineStart 行开始输出钩子
    * @param obj.onLinePrint 行输出中钩子
    * @param obj.onLineFinished 行完成输出钩子
