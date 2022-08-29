@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模拟打字机/命令行输出</title>
+    <style>
+        body{
+            background-color: #000;
+        }
+        .title{
+            background-color: white;
+        }
+        #root_container .believer_terminalprinter_actor{
+            position: relative;
+            display: block;
+            font-size: 14px;
+            line-height: 30px;
+            text-align: left;
+            width: auto;
+            font-family: Monaco, Menlo, 'Courier New', monospace, sans-serif, "Arial";
+            color: aqua;
+        }
+
+        /* 重写输出中的行样式 */
+        #root_container .believer_terminalprinter_on_typing{
+            background-color: rgba(255, 255, 255, 0.383);
+        }
+        #root_container .believer_terminalprinter_on_typing::after{
+            content: '✍️';
+        }
+    </style>
+</head>
+<body>
+    <h3 class="title"></h3>
+    <div id="root_container"></div>
+
+    <script type="module">
+        import TerminalPrinter from '../index.js';
+
+        let tp = new TerminalPrinter({
+            rootSelector:'#root_container',
+            prefix:'[ iTerm2 ]',
+            duration: 60
+        });
+
+        let words = [
+            {
+                word:'hello world.',
+            },
+            {
+                prefix:'[ Cool Prefix ]',
+                word:'这句话前面有签名',
+            },
+            {
+                word:'hi 😄 😈 👨 👩 🧒 👴 👵',
+                lineStyleObject:{
+                    fontSize: '20px',
+                    color:'orange'
+                }
+            },
+            {
+                word:'指定tagName为H3，全英文内容在微信中可能出现翻译字样',
+                tagName: 'h3'
+            },
+            {
+                prefix:'Rose: ',
+                word:'Goodbye Jack...',
+            },
+            {
+                prefix:'Jack: ',
+                word:'You jump, i jump.',
+            },
+            {
+                prefix:'Rose: ',
+                word:'cool ~',
+            },
+            {
+                prefix:'',
+                word:'Amazing! 男女主殉情，全剧终！',
+            },
+            { 
+                prefix:'[Loading]',
+                word:'3',
+                duration: 1000,
+                lineSelector:'.loading',
+                hasOnTypingStyle: false
+            },
+            { 
+                prefix:'[Loading]',
+                word:'2',
+                duration: 1000,
+                lineSelector:'.loading',
+                hasOnTypingStyle: false
+            },
+            { 
+                prefix:'[Loading]',
+                word:'1',
+                duration: 1000,
+                lineSelector:'.loading',
+                hasOnTypingStyle: false
+            },
+            { 
+                prefix:'[Loading]',
+                word:'💥💥',
+                lineSelector:'.loading',
+                hasOnTypingStyle: false
+            },
+            { 
+                prefix:'[Title]',
+                word:'1.我是指定rootSelecto[父元素]的一句话',
+                rootSelector:'.title',
+                hasOnTypingStyle: false
+            },
+            { 
+                prefix:'[Title]',
+                word:'2.我是指定rootSelecto[父元素]的一句话',
+                rootSelector:'.title',
+                hasOnTypingStyle: false
+            },
+            {
+                word:'hello my terminal printer lines.',
+                onLineStart: ()=>{
+                    console.log('on line Start')
+                },
+                onLinePrint: ()=>{
+                    console.log('on line Print')
+                },
+                onLineFinished: ()=>{
+                    console.log('on line Finished')
+                }
+            },
+        ];
+
+        tp.run(words).then(res=>{
+            console.log('well done! do sth else')
+        });
+    </script>
+</body>
+</html>
