@@ -121,13 +121,15 @@ Simulate command line, typewriter output, dialogue output, easy to configure and
 #### 构造函数说明
 - `rootSelector` 所有行内容的父容器
 - `prefix` 所有行内容的前缀签名内容
-- `duration` 所有行内容，每个字符输出所需要的时间，越大越慢
+- `duration` 所有行内容，每个字符输出所需要的时间，越大越慢，默认 60（ms）
+- `autoScroll` 自动将最新内容滚动到视野内，默认 `true`
 
 ```
 let tp = new TerminalPrinter({
     rootSelector:'#root_container',
     prefix:'[ iTerm2 ]',
-    duration: 60
+    duration: 60,
+    autoScroll: false,
 });
 ```
 
