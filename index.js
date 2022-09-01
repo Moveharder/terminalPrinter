@@ -1,6 +1,12 @@
 export default class packageName {
-  constructor({ rootSelector = "", prefix = "", duration = 60 }) {
+  constructor({
+    rootSelector = "",
+    prefix = "",
+    duration = 60,
+    autoScroll = true,
+  }) {
     this.globalRootSelector = rootSelector; //.tag or #tag
+    this.globalAutoScroll = autoScroll; //若最新的内容不在视野内，自动滚动到视野内
     this.globalPrefix = prefix || "";
     this.globalDuration = duration;
     this.insertDefaultStyles();
@@ -144,6 +150,8 @@ export default class packageName {
 
       // 触发：行开始输出钩子
       onLineStart && onLineStart();
+      // 当前输出行自动进入视野
+      this.globalAutoScroll && lineDom.scrollIntoView(true);
 
       for (let i = 0; i < len; i++) {
         inputWord = word.substring(start, i + 1);
@@ -165,7 +173,7 @@ export default class packageName {
     });
   }
 
-  run(words, autoScroll = true) {
+  run(words) {
     let printerRootEl = document.querySelector(this.globalRootSelector);
     if (!printerRootEl) {
       throw new Error("未找到指定的根结点[rootSelector]元素");
@@ -176,7 +184,7 @@ export default class packageName {
           words[i].rootSelector = this.globalRootSelector;
         }
         await this.linePrint(words[i]);
-        autoScroll && printerRootEl.scroll(0, printerRootEl.scrollHeight - 30);
+        // this.globalAutoScroll && printerRootEl.scrollIntoView(true);
       }
       resolve("words print completed!");
     });
